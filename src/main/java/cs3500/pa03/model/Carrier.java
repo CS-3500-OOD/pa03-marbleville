@@ -1,6 +1,6 @@
 package cs3500.pa03.model;
 
-public class Carrier extends ShipType {
+public class Carrier extends Ship {
   /**
    * Constructor for Carrier.
    *

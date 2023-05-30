@@ -1,59 +1,28 @@
 package cs3500.pa03.model;
 
-public abstract class ShipType {
-
-  private Cell[] cells;
-
-  private static String name;
-
-  private static String symbol;
+public enum ShipType {
+  CARRIER,
+  BATTLESHIP,
+  DESTROYER,
+  SUBMARINE;
 
   /**
-   * Constructs a ship with the given cells.
+   * Returns a new ship of the specified type.
    *
-   * @param cells the cells that this ship occupies
+   * @return a new ship of the specified type
    */
-  public ShipType(Cell[] cells, String name, String symbol) {
-    this.cells = cells;
-    this.name = name;
-    this.symbol = symbol;
-  }
-
-  /**
-   * Gets the length of this ship.
-   *
-   * @return the length of this ship
-   */
-  public int getLength() {
-    return this.cells.length;
-  }
-
-  /**
-   * Gets the cells that this ship occupies.
-   *
-   * @return the cells that this ship occupies
-   */
-  public Cell[] getCells() {
-    return this.cells;
-  }
-
-  /**
-   * Gets the name of this ship.
-   *
-   * @return the name of this ship
-   */
-  public String getName() {
-    return this.name;
-  }
-
-  /**
-   * Gets the symbol representing this ship.
-   *
-   * @return the symbol representing this ship
-   */
-  public String getSymbol() {
-    return this.symbol;
+  public Ship getShip() {
+    switch (this) {
+      case CARRIER:
+        return new Carrier(new Cell[6]);
+      case BATTLESHIP:
+        return new Battleship(new Cell[5]);
+      case DESTROYER:
+        return new Destroyer(new Cell[4]);
+      case SUBMARINE:
+        return new Submarine(new Cell[3]);
+      default:
+        throw new IllegalArgumentException("Invalid ship type");
+    }
   }
 }
-
-

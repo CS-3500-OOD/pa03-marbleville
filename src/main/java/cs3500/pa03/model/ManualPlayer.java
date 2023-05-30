@@ -21,7 +21,7 @@ public class ManualPlayer implements Player {
   }
 
   @Override
-  public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
+  public List<Ship> setup(int height, int width, Map<Ship, Integer> specifications) {
     return null;
   }
 

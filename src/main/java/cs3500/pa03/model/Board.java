@@ -24,7 +24,7 @@ public class Board {
    *
    * @param ship the ship to place
    */
-  public void placeShip(ShipType ship) {
+  public void placeShip(Ship ship) {
     //TODO
   }
 

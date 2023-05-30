@@ -1,6 +1,6 @@
 package cs3500.pa03.model;
 
-public class Empty extends ShipType {
+public class Empty extends Ship {
   /**
    * Constructor for Empty.
    *

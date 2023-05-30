@@ -1,7 +1,7 @@
 package cs3500.pa03.model;
 
 public class Cell {
-  private ShipType ship;
+  private Ship ship;
 
   private Coord coord;
 
@@ -19,7 +19,7 @@ public class Cell {
   /**
    * Gets the ship that is on this cell.
    */
-  public ShipType getShip() {
+  public Ship getShip() {
     return ship;
   }
 
@@ -28,7 +28,7 @@ public class Cell {
    *
    * @param ship the ship to set
    */
-  public void setShip(ShipType ship) {
+  public void setShip(Ship ship) {
     this.ship = ship;
   }
 }

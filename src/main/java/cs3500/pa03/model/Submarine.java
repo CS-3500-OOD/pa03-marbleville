@@ -1,6 +1,6 @@
 package cs3500.pa03.model;
 
-public class Submarine extends ShipType {
+public class Submarine extends Ship {
   /**
    * Constructor for Submarine.
    *

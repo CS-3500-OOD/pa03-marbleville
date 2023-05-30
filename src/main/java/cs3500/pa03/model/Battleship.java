@@ -1,6 +1,6 @@
 package cs3500.pa03.model;
 
-public class Battleship extends ShipType {
+public class Battleship extends Ship {
   /**
    * Constructor for Battleship.
    *
