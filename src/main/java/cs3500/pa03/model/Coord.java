@@ -32,4 +32,14 @@ public class Coord {
   public int getCol() {
     return col;
   }
+
+  /**
+   * Compares this Coord for equality with the given Coord.
+   *
+   * @param o the Coord to compare to
+   * @return true if the given Coord is equal to this Coord, false otherwise
+   */
+  public boolean equals(Coord o) {
+    return o.row == this.row && o.col == this.col;
+  }
 }

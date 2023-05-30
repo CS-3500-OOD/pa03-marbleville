@@ -4,18 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 public class ComputerPlayer implements Player {
+  private Board board;
+
   @Override
   public String name() {
     return "AI";
   }
 
   @Override
-  public List<Ship> setup(int height, int width, Map<Ship, Integer> specifications) {
-    return null;
+  public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
+    this.board = new Board(height, width);
+    return this.board.setup(specifications);
   }
 
   @Override
   public List<Coord> takeShots() {
+    // AI goes here in some way
     return null;
   }
 
@@ -26,11 +30,11 @@ public class ComputerPlayer implements Player {
 
   @Override
   public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
-
+    // change AI strategy here based on hits
   }
 
   @Override
   public void endGame(GameResult result, String reason) {
-
+    // Do anything?
   }
 }

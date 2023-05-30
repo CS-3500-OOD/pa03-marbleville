@@ -5,15 +5,24 @@ public class Cell {
 
   private Coord coord;
 
+  private boolean hit = false;
+
   /**
    * Constructs a cell with no ship.
    */
   public Cell(int row, int col) {
-    Coord coord = new Coord(row, col);
-    this.coord = coord;
+    Coord coord1 = new Coord(row, col);
+    this.coord = coord1;
     Cell[] c = new Cell[1];
     c[0] = this;
     this.ship = new Empty(c);
+  }
+
+  /**
+   * Sets the status of this Cell to hit
+   */
+  public void hit() {
+    this.hit = true;
   }
 
   /**
@@ -30,5 +39,14 @@ public class Cell {
    */
   public void setShip(Ship ship) {
     this.ship = ship;
+  }
+
+  /**
+   * Returns this Cell's coordinate.
+   *
+   * @return this Cell's coordinate
+   */
+  public Coord getCoord() {
+    return coord;
   }
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 public class ManualPlayer implements Player {
   private String name;
 
+  private Board board;
+
   /**
    * Constructs a manual player with the given name.
    *
@@ -21,12 +23,14 @@ public class ManualPlayer implements Player {
   }
 
   @Override
-  public List<Ship> setup(int height, int width, Map<Ship, Integer> specifications) {
-    return null;
+  public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
+    this.board = new Board(height, width);
+    return this.board.setup(specifications);
   }
 
   @Override
   public List<Coord> takeShots() {
+    // calls controller class which calls view to get input
     return null;
   }
 
@@ -37,11 +41,11 @@ public class ManualPlayer implements Player {
 
   @Override
   public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
-
+    // call view to display hits
   }
 
   @Override
   public void endGame(GameResult result, String reason) {
-
+    // call view to display end game
   }
 }

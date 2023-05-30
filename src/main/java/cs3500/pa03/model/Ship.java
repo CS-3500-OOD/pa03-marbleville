@@ -54,6 +54,16 @@ public abstract class Ship {
   public String getSymbol() {
     return this.symbol;
   }
+
+  /**
+   * Sets the cell at the given index to the given cell.
+   *
+   * @param index the index of the cell to set
+   * @param cell  the cell to set
+   */
+  public void setCell(int index, Cell cell) {
+    this.cells[index] = cell;
+  }
 }
 
 

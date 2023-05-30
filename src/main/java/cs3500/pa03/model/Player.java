@@ -26,7 +26,7 @@ public interface Player {
    *                       appear on the board
    * @return the placements of each ship on the board
    */
-  List<Ship> setup(int height, int width, Map<Ship, Integer> specifications);
+  List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications);
 
 
   /**
