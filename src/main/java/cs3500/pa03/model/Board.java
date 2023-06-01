@@ -1,12 +1,14 @@
 package cs3500.pa03.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class Board {
   private Cell[][] board;
 
+  // Stores ships that have been placed on the board and that are not sunk
   private ArrayList<Ship> ships = new ArrayList<>();
 
   private Random rand;
@@ -18,6 +20,10 @@ public class Board {
    * @param cols the number of columns in this board
    */
   public Board(int rows, int cols) {
+    if (rows > 15 || rows < 6 || cols > 15 || cols < 6) {
+      throw new IllegalArgumentException("Invalid board size. Please enter a board size between "
+          + "6x6 and 15x15.");
+    }
     this.board = new Cell[rows][cols];
     this.rand = new Random();
     for (int row = 0; row < rows; row++) {
@@ -27,9 +33,104 @@ public class Board {
     }
   }
 
+  /**
+   * Returns the cell of this board that corresponds to the given coordinate
+   *
+   * @param coord the coordinate of the cell to return
+   */
+  private Cell getCell(Coord coord) {
+    return this.board[coord.getRow()][coord.getCol()];
+  }
+
+  /**
+   * Returns an ArrayList of coords from the given list that hit a ship.
+   *
+   * @param coords the list of coords to check
+   * @return the list of coords that hit a ship
+   */
+  public ArrayList<Coord> reportDamage(List<Coord> coords) {
+    ArrayList<Coord> hits = new ArrayList<>();
+    // set ship cells to hit
+    for (Coord coord : coords) {
+      if (!(getCell(coord).getShip() instanceof Empty)) {
+        hits.add(coord);
+        getCell(coord).hit();
+      }
+    }
+    removeSunkShips();
+    return hits;
+  }
+
+  /**
+   * Returns a list of cells from this board that are neighbors of the given cell.
+   *
+   * @param cell the cell whose neighbors to return
+   * @return the list of neighbors of the given cell
+   */
+  public ArrayList<Cell> getNeighborCells(Cell cell) {
+    ArrayList<Cell> neighbors = new ArrayList<>();
+    Coord topCoord = new Coord(cell.getCoord().getRow() - 1, cell.getCoord().getCol());
+    Coord bottomCoord = new Coord(cell.getCoord().getRow() + 1, cell.getCoord().getCol());
+    Coord leftCoord = new Coord(cell.getCoord().getRow(), cell.getCoord().getCol() - 1);
+    Coord rightCoord = new Coord(cell.getCoord().getRow(), cell.getCoord().getCol() + 1);
+    if (topCoord.getRow() >= 0) {
+      neighbors.add(getCell(topCoord));
+    }
+    if (bottomCoord.getRow() < board.length) {
+      neighbors.add(getCell(bottomCoord));
+    }
+    if (leftCoord.getCol() >= 0) {
+      neighbors.add(getCell(leftCoord));
+    }
+    if (rightCoord.getCol() < board[0].length) {
+      neighbors.add(getCell(rightCoord));
+    }
+    return neighbors;
+  }
+
+  /**
+   * Removes and sunk ship from this board's list of ships.
+   */
+  private void removeSunkShips() {
+    ArrayList<Ship> shipsToRemove = new ArrayList<>();
+    for (Ship ship : ships) {
+      if (ship.isSunk()) {
+        shipsToRemove.add(ship);
+      }
+    }
+    ships.removeAll(shipsToRemove);
+  }
+
+  /**
+   * Given a list of coordinates, sets the hit status of each corresponding cell in this board
+   *
+   * @param coords the list of coordinates to set the hit status of
+   */
+  public void successfulHits(List<Coord> coords) {
+    for (Coord coord : coords) {
+      getCell(coord).hit();
+    }
+  }
+
+  /**
+   * Constructs a board with the given number of rows and columns and a random seed for testing.
+   *
+   * @param rows the number of rows in this board
+   * @param cols the number of columns in this board
+   * @param seed the random seed to use
+   */
   public Board(int rows, int cols, int seed) {
     this(rows, cols);
     this.rand = new Random(seed);
+  }
+
+  /**
+   * Returns the ships on this board.
+   *
+   * @return the ships on this board
+   */
+  public ArrayList<Ship> getShips() {
+    return ships;
   }
 
   /**
@@ -39,11 +140,50 @@ public class Board {
    * @return the placements of each ship on the board
    */
   public ArrayList<Ship> setup(Map<ShipType, Integer> specifications) {
-    //TODO
-    // Make ship based on type
-    // call placeShip on each ship
-    // push each ship to the ships arraylist
+    if (!isValidNumberOfShips(specifications)) {
+      throw new IllegalArgumentException("Invalid number of ships. Please enter a number of "
+          + "ships no grater than the smalles dimention of the board and have at least one "
+          + "of each ship.");
+    }
+    ArrayList<Ship> shipsToPlace = getShipsToPlace(specifications);
+    for (Ship ship : shipsToPlace) {
+      placeShip(ship);
+      ships.add(ship);
+    }
     return ships;
+  }
+
+  /**
+   * Returns true if the number of ships given is valid for this board.
+   *
+   * @param specifications a map of ship type to the number of occurrences each ship should
+   * @return true if the number of ships given is valid for this board
+   */
+  private boolean isValidNumberOfShips(Map<ShipType, Integer> specifications) {
+    int totalShips = 0;
+    for (ShipType type : specifications.keySet()) {
+      if (specifications.get(type) <= 0) {
+        return false;
+      }
+      totalShips += specifications.get(type);
+    }
+    return totalShips <= this.getNumRows() && totalShips <= this.getNumCols();
+  }
+
+  /**
+   * Given a map of specifications, returns an arraylist of ships to place.
+   *
+   * @param specifications a map of ship type to the number of occurrences each ship should
+   * @return an arraylist of ships to place
+   */
+  private ArrayList<Ship> getShipsToPlace(Map<ShipType, Integer> specifications) {
+    ArrayList<Ship> shipsToPlace = new ArrayList<>();
+    for (ShipType type : specifications.keySet()) {
+      for (int i = 0; i < specifications.get(type); i++) {
+        shipsToPlace.add(type.getShip());
+      }
+    }
+    return shipsToPlace;
   }
 
   /**
@@ -62,6 +202,7 @@ public class Board {
       }
       // Get random cell and generate possible ship locations from it
       Cell randomCell = unpopulated.get(rand.nextInt(unpopulated.size()));
+      // all possible cells that the ship can be placed in vertically and horizontally
       ArrayList<Cell> consecutiveVertical = getVerticalConsecutive(randomCell);
       ArrayList<Cell> consecutiveHorizontal = getHorizontalConsecutive(randomCell);
 
@@ -76,6 +217,7 @@ public class Board {
       // If horizontal or vertical are long enough, randomly place the ship within, else, try again
       int shipCellIdx = 0;
       if (consecutiveVertical.size() >= ship.getLength()) {
+        // place the ship in a random location within the consecutive cells
         int index = rand.nextInt(consecutiveVertical.size() - ship.getLength() + 1);
         for (int i = index; i < index + ship.getLength(); i++) {
           consecutiveVertical.get(i).setShip(ship);
@@ -85,6 +227,7 @@ public class Board {
         }
         shipPlaced = true;
       } else if (consecutiveHorizontal.size() >= ship.getLength()) {
+        // same as above but for horizontal
         int index = rand.nextInt(consecutiveHorizontal.size() - ship.getLength() + 1);
         for (int i = index; i < index + ship.getLength(); i++) {
           consecutiveHorizontal.get(i).setShip(ship);
@@ -164,5 +307,23 @@ public class Board {
    */
   public Cell[][] getBoard() {
     return board;
+  }
+
+  /**
+   * Returns the number of rows on this board.
+   *
+   * @return the number of rows on this board
+   */
+  public int getNumRows() {
+    return board.length;
+  }
+
+  /**
+   * Returns the number of columns on this board.
+   *
+   * @return the number of columns on this board
+   */
+  public int getNumCols() {
+    return board[0].length;
   }
 }

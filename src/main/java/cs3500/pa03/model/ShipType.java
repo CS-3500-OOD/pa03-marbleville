@@ -25,4 +25,19 @@ public enum ShipType {
         throw new IllegalArgumentException("Invalid ship type");
     }
   }
+
+  public static ShipType getTypeFromNumber(int num) {
+    switch (num) {
+      case 0:
+        return CARRIER;
+      case 1:
+        return BATTLESHIP;
+      case 2:
+        return DESTROYER;
+      case 3:
+        return SUBMARINE;
+      default:
+        throw new IllegalArgumentException("Invalid ship type");
+    }
+  }
 }

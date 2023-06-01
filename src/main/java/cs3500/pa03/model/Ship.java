@@ -64,6 +64,29 @@ public abstract class Ship {
   public void setCell(int index, Cell cell) {
     this.cells[index] = cell;
   }
+
+  /**
+   * Returns a string representation of this ship.
+   *
+   * @return a string representation of this ship
+   */
+  public String toString() {
+    return this.symbol;
+  }
+
+  /**
+   * Returns weather or not this ship is sunk
+   *
+   * @return true if this ship is sunk
+   */
+  public boolean isSunk() {
+    for (Cell cell : this.cells) {
+      if (!cell.isHit()) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 

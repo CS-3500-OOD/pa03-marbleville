@@ -1,5 +1,7 @@
 package cs3500.pa03.model;
 
+import java.util.ArrayList;
+
 public class Cell {
   private Ship ship;
 
@@ -26,6 +28,15 @@ public class Cell {
   }
 
   /**
+   * Returns true if this cell is hit
+   *
+   * @return true if this cell is hit
+   */
+  public boolean isHit() {
+    return this.hit;
+  }
+
+  /**
    * Gets the ship that is on this cell.
    */
   public Ship getShip() {
@@ -48,5 +59,18 @@ public class Cell {
    */
   public Coord getCoord() {
     return coord;
+  }
+
+  /**
+   * Returns a string representation of this Cell.
+   *
+   * @return a string representation of this Cell
+   */
+  public String toString() {
+    if (this.hit) {
+      return "X";
+    } else {
+      return this.ship.toString();
+    }
   }
 }

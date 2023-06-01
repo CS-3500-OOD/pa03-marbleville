@@ -1,5 +1,9 @@
 package cs3500.pa03;
 
+/* TODO:
+    - Main game loop
+ */
+
 /**
  * This is the main driver of this project.
  */

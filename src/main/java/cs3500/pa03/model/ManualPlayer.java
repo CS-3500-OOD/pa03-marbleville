@@ -1,5 +1,8 @@
 package cs3500.pa03.model;
 
+import cs3500.pa03.controller.InputParser;
+import cs3500.pa03.controller.OutputParser;
+import cs3500.pa03.view.Printer;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +10,8 @@ public class ManualPlayer implements Player {
   private String name;
 
   private Board board;
+
+  private Board opponentBoard;
 
   /**
    * Constructs a manual player with the given name.
@@ -17,6 +22,25 @@ public class ManualPlayer implements Player {
     this.name = name;
   }
 
+
+  /**
+   * Returns this player's board
+   *
+   * @return the board
+   */
+  public Board getBoard() {
+    return this.board;
+  }
+
+  /**
+   * Returns this player's opponent's board
+   *
+   * @return the opponent's board
+   */
+  public Board getOpponentBoard() {
+    return this.opponentBoard;
+  }
+
   @Override
   public String name() {
     return name;
@@ -24,28 +48,35 @@ public class ManualPlayer implements Player {
 
   @Override
   public List<Ship> setup(int height, int width, Map<ShipType, Integer> specifications) {
+    this.opponentBoard = new Board(height, width);
     this.board = new Board(height, width);
     return this.board.setup(specifications);
   }
 
   @Override
   public List<Coord> takeShots() {
-    // calls controller class which calls view to get input
-    return null;
+    for (Coord c : InputParser.getListOfShots(this)) {
+      if (c.getRow() >= this.opponentBoard.getNumRows() ||
+          c.getCol() >= this.opponentBoard.getNumCols()) {
+        OutputParser.show("Invalid coordinate: " + c);
+        return takeShots();
+      }
+    }
+    return InputParser.getListOfShots(this);
   }
 
   @Override
   public List<Coord> reportDamage(List<Coord> opponentShotsOnBoard) {
-    return null;
+    return board.reportDamage(opponentShotsOnBoard);
   }
 
   @Override
   public void successfulHits(List<Coord> shotsThatHitOpponentShips) {
-    // call view to display hits
+    this.opponentBoard.successfulHits(shotsThatHitOpponentShips);
   }
 
   @Override
   public void endGame(GameResult result, String reason) {
-    // call view to display end game
+    Printer.show(this.name + " " + result + " because " + reason);
   }
 }

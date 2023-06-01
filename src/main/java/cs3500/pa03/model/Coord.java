@@ -16,6 +16,21 @@ public class Coord {
   }
 
   /**
+   * Constructs a coordinate with the given string representation of the form of "[int] [int]"
+   *
+   * @param coord the string to be parsed
+   */
+  public Coord(String coord) {
+    try {
+      String[] split = coord.split(" ");
+      this.row = Integer.parseInt(split[0]);
+      this.col = Integer.parseInt(split[1]);
+    } catch (NumberFormatException e) {
+      throw new IllegalArgumentException("Invalid coordinate format.");
+    }
+  }
+
+  /**
    * Gets the row of this coordinate.
    *
    * @return the row of this coordinate
