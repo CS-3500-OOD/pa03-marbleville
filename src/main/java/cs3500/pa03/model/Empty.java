@@ -22,11 +22,6 @@ public class Empty extends Ship {
 
   @Override
   public String getName() {
-    return null;
-  }
-
-  @Override
-  public String getSymbol() {
-    return null;
+    throw new UnsupportedOperationException("Empty does not have a name");
   }
 }

@@ -54,12 +54,13 @@ public class BattleSalvoGame {
         break;
       }
       if (this.computerPlayer.getBoard().getShips().size() == 0) {
-        this.result = GameResult.LOSE;
+        this.result = GameResult.WIN;
         manualPlayer.endGame(this.result, "You sunk all their ships!");
         break;
       }
-      OutputParser.show("Please enter a valid coordinate to fire at:\n");
+      OutputParser.show("Please enter valid coordinates to fire at:\n");
       List<Coord> playerShots = manualPlayer.takeShots();
+      OutputParser.show("Shots firing...\n");
       List<Coord> computerShots = computerPlayer.takeShots();
       manualPlayer.successfulHits(computerPlayer.reportDamage(playerShots));
       computerPlayer.successfulHits(manualPlayer.reportDamage(computerShots));

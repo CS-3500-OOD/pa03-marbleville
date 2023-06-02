@@ -9,6 +9,8 @@ public class Cell {
 
   private boolean hit = false;
 
+  private boolean firedUpon = false;
+
   /**
    * Constructs a cell with no ship.
    */
@@ -25,6 +27,22 @@ public class Cell {
    */
   public void hit() {
     this.hit = true;
+  }
+
+  /**
+   * Sets the status of this Cell to firedUpon
+   */
+  public void firedUpon() {
+    this.firedUpon = true;
+  }
+
+  /**
+   * Returns true if this cell is fired upon
+   *
+   * @return true if this cell is fired upon
+   */
+  public boolean isFiredUpon() {
+    return this.firedUpon;
   }
 
   /**
@@ -67,7 +85,9 @@ public class Cell {
    * @return a string representation of this Cell
    */
   public String toString() {
-    if (this.hit) {
+    if (this.firedUpon && !this.hit) {
+      return "M";
+    } else if (this.hit) {
       return "X";
     } else {
       return this.ship.toString();

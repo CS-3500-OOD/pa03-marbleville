@@ -3,13 +3,32 @@ package cs3500.pa03.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class ComputerPlayer implements Player {
   private Board board;
 
   private Board opponentBoard;
 
+  private Random rand = new Random();
+
   private ArrayList<Coord> shotsMade = new ArrayList<>();
+
+  /**
+   * Constructs a computer player
+   */
+  public ComputerPlayer() {
+  }
+
+
+  /**
+   * Constructs a computer player with the given random see for testing
+   *
+   * @param seed the random seed
+   */
+  public ComputerPlayer(int seed) {
+    this.rand = new Random(seed);
+  }
 
   @Override
   public String name() {
@@ -26,34 +45,15 @@ public class ComputerPlayer implements Player {
   @Override
   public List<Coord> takeShots() {
     ArrayList<Coord> shots = new ArrayList<>();
-    int numChecked = 0;
-    while (shots.size() < this.board.getShips().size() ||
-        numChecked >= board.getNumRows() * board.getNumCols()) {
-      for (Cell[] cell : this.opponentBoard.getBoard()) {
-        for (Cell c : cell) {
-          numChecked++;
-          if (c.isHit()) {
-            // gets this cell neighbors and fires at them
-            for (Cell cell1 : this.opponentBoard.getNeighborCells(c)) {
-              if (!cell1.isHit() && !shotsMade.contains(cell1.getCoord())) {
-                shots.add(cell1.getCoord());
-                shotsMade.add(cell1.getCoord());
-              }
-            }
-          }
-        }
+    for (int i = 0; i < this.board.getShips().size(); i++) {
+      Coord c = new Coord((rand.nextInt(board.getNumRows())),
+          rand.nextInt(board.getNumCols()));
+      while (this.shotsMade.contains(c)) {
+        c = new Coord((rand.nextInt(board.getNumRows())),
+            rand.nextInt(board.getNumCols()));
       }
-    }
-    // it not enough made shots to use above loop, shoot randomly
-    if (shots.size() < this.board.getShips().size()) {
-      while (shots.size() < this.board.getShips().size()) {
-        Coord c = new Coord((int) (Math.random() * this.opponentBoard.getNumRows()),
-            (int) (Math.random() * this.opponentBoard.getNumCols()));
-        if (!shotsMade.contains(c)) {
-          shots.add(c);
-          shotsMade.add(c);
-        }
-      }
+      shots.add(c);
+      this.shotsMade.add(c);
     }
     return shots;
   }

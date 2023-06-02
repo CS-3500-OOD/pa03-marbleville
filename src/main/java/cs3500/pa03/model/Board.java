@@ -1,6 +1,8 @@
 package cs3500.pa03.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,6 +14,7 @@ public class Board {
   private ArrayList<Ship> ships = new ArrayList<>();
 
   private Random rand;
+
 
   /**
    * Constructs a board with the given number of rows and columns.
@@ -34,11 +37,23 @@ public class Board {
   }
 
   /**
+   * Constructs a board with the given number of rows and columns and a random seed for testing.
+   *
+   * @param rows the number of rows in this board
+   * @param cols the number of columns in this board
+   * @param seed the random seed to use
+   */
+  public Board(int rows, int cols, int seed) {
+    this(rows, cols);
+    this.rand = new Random(seed);
+  }
+
+  /**
    * Returns the cell of this board that corresponds to the given coordinate
    *
    * @param coord the coordinate of the cell to return
    */
-  private Cell getCell(Coord coord) {
+  public Cell getCell(Coord coord) {
     return this.board[coord.getRow()][coord.getCol()];
   }
 
@@ -113,18 +128,6 @@ public class Board {
   }
 
   /**
-   * Constructs a board with the given number of rows and columns and a random seed for testing.
-   *
-   * @param rows the number of rows in this board
-   * @param cols the number of columns in this board
-   * @param seed the random seed to use
-   */
-  public Board(int rows, int cols, int seed) {
-    this(rows, cols);
-    this.rand = new Random(seed);
-  }
-
-  /**
    * Returns the ships on this board.
    *
    * @return the ships on this board
@@ -142,11 +145,12 @@ public class Board {
   public ArrayList<Ship> setup(Map<ShipType, Integer> specifications) {
     if (!isValidNumberOfShips(specifications)) {
       throw new IllegalArgumentException("Invalid number of ships. Please enter a number of "
-          + "ships no grater than the smalles dimention of the board and have at least one "
+          + "ships no grater than the smallest dimension of the board and have at least one "
           + "of each ship.");
     }
     ArrayList<Ship> shipsToPlace = getShipsToPlace(specifications);
     for (Ship ship : shipsToPlace) {
+      System.out.println(ship.getLength());
       placeShip(ship);
       ships.add(ship);
     }
@@ -183,6 +187,7 @@ public class Board {
         shipsToPlace.add(type.getShip());
       }
     }
+    shipsToPlace.sort((s1, s2) -> s2.getLength() - s1.getLength());
     return shipsToPlace;
   }
 
@@ -191,17 +196,21 @@ public class Board {
    *
    * @param ship the ship to place
    */
+  // TODO: may fail under edge cases where there are ver few cells, may have to fix with a different
+  // approach for lower dimensions
   public void placeShip(Ship ship) {
-    // GEts cells that are empty
+    // Gets cells that are empty
     ArrayList<Cell> unpopulated = getUnpopulated();
     // While loop control
     boolean shipPlaced = false;
     while (!shipPlaced) {
-      if (unpopulated.isEmpty()) {
+      if (unpopulated.size() == 0) {
         throw new IllegalArgumentException("No more unpopulated cells");
       }
+      // Random orientation
+      boolean vertical = rand.nextBoolean();
       // Get random cell and generate possible ship locations from it
-      Cell randomCell = unpopulated.get(rand.nextInt(unpopulated.size()));
+      Cell randomCell = unpopulated.remove(rand.nextInt(unpopulated.size()));
       // all possible cells that the ship can be placed in vertically and horizontally
       ArrayList<Cell> consecutiveVertical = getVerticalConsecutive(randomCell);
       ArrayList<Cell> consecutiveHorizontal = getHorizontalConsecutive(randomCell);
@@ -216,13 +225,15 @@ public class Board {
 
       // If horizontal or vertical are long enough, randomly place the ship within, else, try again
       int shipCellIdx = 0;
-      if (consecutiveVertical.size() >= ship.getLength()) {
+      // throw some randomness in there
+      if (consecutiveVertical.size() >= ship.getLength() && vertical) {
         // place the ship in a random location within the consecutive cells
+        // issue here
         int index = rand.nextInt(consecutiveVertical.size() - ship.getLength() + 1);
         for (int i = index; i < index + ship.getLength(); i++) {
-          consecutiveVertical.get(i).setShip(ship);
+          consecutiveVertical.get(i - index).setShip(ship);
           // Sets ship cells
-          ship.setCell(shipCellIdx, consecutiveVertical.get(i));
+          ship.setCell(shipCellIdx, consecutiveVertical.get(i - index));
           shipCellIdx++;
         }
         shipPlaced = true;
@@ -230,8 +241,8 @@ public class Board {
         // same as above but for horizontal
         int index = rand.nextInt(consecutiveHorizontal.size() - ship.getLength() + 1);
         for (int i = index; i < index + ship.getLength(); i++) {
-          consecutiveHorizontal.get(i).setShip(ship);
-          ship.setCell(shipCellIdx, consecutiveHorizontal.get(i));
+          consecutiveHorizontal.get(i - index).setShip(ship);
+          ship.setCell(shipCellIdx, consecutiveHorizontal.get(i - index));
           shipCellIdx++;
         }
         shipPlaced = true;

@@ -5,15 +5,15 @@ public class BoardDisplayer {
     Printer.show("Opponent's Board:");
     for (String[] row : opponentBoard) {
       for (String cell : row) {
-        System.out.print(cell);
+        System.out.print(cell + " ");
       }
       System.out.println();
     }
-
+    System.out.println();
     Printer.show("Your Board:");
     for (String[] row : myBoard) {
       for (String cell : row) {
-        System.out.print(cell);
+        System.out.print(cell + " ");
       }
       System.out.println();
     }

@@ -1,9 +1,7 @@
 package cs3500.pa03.controller;
 
 import cs3500.pa03.model.Board;
-import cs3500.pa03.model.ComputerPlayer;
 import cs3500.pa03.model.ManualPlayer;
-import cs3500.pa03.model.Player;
 import cs3500.pa03.view.BoardDisplayer;
 import cs3500.pa03.view.Printer;
 
@@ -24,12 +22,15 @@ public class OutputParser {
     for (int i = 0; i < myBoard.getNumRows(); i++) {
       for (int j = 0; j < myBoard.getNumCols(); j++) {
         myBoardRepresentation[i][j] = myBoard.getBoard()[i][j].toString();
+        if (myBoardRepresentation[i][j].equals("M")) {
+          myBoardRepresentation[i][j] = "0";
+        }
       }
     }
 
     for (int i = 0; i < opponentBoard.getNumRows(); i++) {
       for (int j = 0; j < opponentBoard.getNumCols(); j++) {
-        myBoardRepresentation[i][j] = opponentBoard.getBoard()[i][j].toString();
+        opponentBoardRepresentation[i][j] = opponentBoard.getBoard()[i][j].toString();
       }
     }
     BoardDisplayer.displayBoard(myBoardRepresentation, opponentBoardRepresentation);

@@ -4,7 +4,8 @@ public enum ShipType {
   CARRIER,
   BATTLESHIP,
   DESTROYER,
-  SUBMARINE;
+  SUBMARINE,
+  UNKNOWN;
 
   /**
    * Returns a new ship of the specified type.

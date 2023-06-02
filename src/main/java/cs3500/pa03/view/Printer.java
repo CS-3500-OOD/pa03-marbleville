@@ -20,7 +20,11 @@ public class Printer {
    * @param message the message to show
    * @param out     the output stream to write to
    */
-  public static void showHelper(String message, PrintStream out) {
-    out.println(message);
+  public static void showHelper(String message, Appendable out) {
+    try {
+      out.append(message);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid output stream");
+    }
   }
 }

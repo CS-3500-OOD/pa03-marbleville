@@ -23,6 +23,9 @@ public class Coord {
   public Coord(String coord) {
     try {
       String[] split = coord.split(" ");
+      if (split.length != 2) {
+        throw new IllegalArgumentException("Invalid coordinate format.");
+      }
       this.row = Integer.parseInt(split[0]);
       this.col = Integer.parseInt(split[1]);
     } catch (NumberFormatException e) {

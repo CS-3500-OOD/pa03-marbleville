@@ -15,7 +15,7 @@ public class InputGatherer {
    */
   public static ArrayList<String> getShotsHelper(int numShots, Readable in) {
     Scanner input = new Scanner(in);
-    Printer.show("Please enter " + numShots + " shots.");
+    Printer.show("Please enter " + numShots + " shots:");
     ArrayList<String> shots = new ArrayList<>();
     for (int i = 0; i < numShots; i++) {
       shots.add(input.nextLine());

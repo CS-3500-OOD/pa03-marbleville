@@ -4,9 +4,9 @@ public abstract class Ship {
 
   private Cell[] cells;
 
-  private static String name;
+  private final String name;
 
-  private static String symbol;
+  private final String symbol;
 
   /**
    * Constructs a ship with the given cells.
