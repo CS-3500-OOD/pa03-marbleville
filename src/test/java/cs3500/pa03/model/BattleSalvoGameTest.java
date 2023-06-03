@@ -1,10 +1,8 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,9 +47,9 @@ class BattleSalvoGameTest {
     assertEquals(4, game.getManualPlayer().getBoard().getShips().size());
     assertEquals(10, game.getManualPlayer().getBoard().getBoard().length);
     assertEquals(10, game.getComputerPlayer().getBoard().getBoard().length);
-    assertEquals("Welcome to BattleSalvo!\n" +
-            "Please enter a valid height and width:\n" +
-            "Please enter the number of each type of ship in order of [Carrier, Battleship, "
+    assertEquals("Welcome to BattleSalvo!\n"
+            + "Please enter a valid height and width:\n"
+            + "Please enter the number of each type of ship in order of [Carrier, Battleship, "
             + "Destroyer, Submarine]:\n",
         out.toString());
   }

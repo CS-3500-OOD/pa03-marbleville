@@ -1,18 +1,20 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ShipTest {
-  Ship s;
+  Ship ship;
 
   @BeforeEach
   void setUp() {
-    s = new Submarine(new Cell[1]);
-    for (int i = 0; i < s.getCells().length; i++) {
-      s.getCells()[i] = new Cell(0, 0);
+    ship = new Submarine(new Cell[1]);
+    for (int i = 0; i < ship.getCells().length; i++) {
+      ship.getCells()[i] = new Cell(0, 0);
     }
   }
 
@@ -22,8 +24,8 @@ class ShipTest {
   @Test
   void setCell() {
     Cell c = new Cell(0, 0);
-    s.setCell(0, c);
-    assertEquals(c, s.getCells()[0]);
+    ship.setCell(0, c);
+    assertEquals(c, ship.getCells()[0]);
   }
 
   /**
@@ -31,7 +33,7 @@ class ShipTest {
    */
   @Test
   void testToString() {
-    assertEquals("S", s.toString());
+    assertEquals("S", ship.toString());
   }
 
   /**
@@ -39,10 +41,10 @@ class ShipTest {
    */
   @Test
   void isSunk() {
-    assertFalse(s.isSunk());
-    for (Cell c : s.getCells()) {
+    assertFalse(ship.isSunk());
+    for (Cell c : ship.getCells()) {
       c.hit();
     }
-    assertTrue(s.isSunk());
+    assertTrue(ship.isSunk());
   }
 }

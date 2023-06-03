@@ -1,8 +1,7 @@
 package cs3500.pa03.view;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 class PrinterTest {
@@ -15,5 +14,4 @@ class PrinterTest {
     Printer.show("Hello World!", out);
     assertEquals("Hello World!", out.toString());
   }
-
 }

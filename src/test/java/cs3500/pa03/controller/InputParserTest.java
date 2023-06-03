@@ -1,6 +1,8 @@
 package cs3500.pa03.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import cs3500.pa03.model.Coord;
 import cs3500.pa03.model.ManualPlayer;
@@ -17,12 +19,12 @@ class InputParserTest {
    */
   @Test
   public void testGetListOfShots() {
-    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     HashMap<ShipType, Integer> specs = new HashMap<>();
     specs.put(ShipType.BATTLESHIP, 1);
     specs.put(ShipType.DESTROYER, 1);
     specs.put(ShipType.SUBMARINE, 1);
     specs.put(ShipType.CARRIER, 1);
+    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     player.setup(10, 10, specs);
     ArrayList<Coord> shots = InputParser.getListOfShots(player,
         new StringReader("1 1\n2 2\n3 3\n4 4\n"), System.out);
@@ -38,12 +40,12 @@ class InputParserTest {
    */
   @Test
   public void testGetListOfShotsError() {
-    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     HashMap<ShipType, Integer> specs = new HashMap<>();
     specs.put(ShipType.BATTLESHIP, 1);
     specs.put(ShipType.DESTROYER, 1);
     specs.put(ShipType.SUBMARINE, 1);
     specs.put(ShipType.CARRIER, 1);
+    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     player.setup(10, 10, specs);
     StringBuilder sb = new StringBuilder();
     try {

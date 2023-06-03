@@ -1,6 +1,6 @@
 package cs3500.pa03.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import cs3500.pa03.model.ManualPlayer;
 import cs3500.pa03.model.ShipType;
@@ -14,18 +14,18 @@ class OutputParserTest {
    */
   @Test
   void testShowBoards() {
-    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     HashMap<ShipType, Integer> specs = new HashMap<>();
     specs.put(ShipType.BATTLESHIP, 1);
     specs.put(ShipType.DESTROYER, 1);
     specs.put(ShipType.SUBMARINE, 1);
     specs.put(ShipType.CARRIER, 1);
+    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     player.setup(10, 10, specs);
 
     StringBuilder sb = new StringBuilder();
     OutputParser.showBoards(player, sb);
-    assertEquals("Opponent's Board:\n" +
-        "0 0 0 0 0 0 0 0 0 ", sb.substring(0, 36));
+    assertEquals("Opponent's Board:\n"
+        + "0 0 0 0 0 0 0 0 0 ", sb.substring(0, 36));
   }
 
   /**

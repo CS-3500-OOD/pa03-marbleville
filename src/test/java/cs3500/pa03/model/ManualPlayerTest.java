@@ -1,6 +1,8 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -75,14 +77,14 @@ class ManualPlayerTest {
    */
   @Test
   void testTakeShotsInvalid() {
-    ManualPlayer p =
-        new ManualPlayer("Player", new StringReader("1 11\n1 1\n2 2\n3 3"));
-
     HashMap<ShipType, Integer> specifications = new HashMap<>();
     specifications.put(ShipType.BATTLESHIP, 1);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
     specifications.put(ShipType.CARRIER, 1);
+
+    ManualPlayer p =
+        new ManualPlayer("Player", new StringReader("1 11\n1 1\n2 2\n3 3"));
     p.setup(10, 10, specifications);
     StringBuilder sb = new StringBuilder();
     p.setOut(sb);

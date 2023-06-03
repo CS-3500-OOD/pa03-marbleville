@@ -1,16 +1,18 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CellTest {
-  Cell c;
+  Cell cell;
 
   @BeforeEach
   public void setup() {
-    c = new Cell(0, 0);
+    cell = new Cell(0, 0);
   }
 
   /**
@@ -18,9 +20,9 @@ class CellTest {
    */
   @Test
   public void testHit() {
-    assertFalse(c.isHit());
-    c.hit();
-    assertTrue(c.isHit());
+    assertFalse(cell.isHit());
+    cell.hit();
+    assertTrue(cell.isHit());
   }
 
   /**
@@ -28,9 +30,9 @@ class CellTest {
    */
   @Test
   public void testFiredUpon() {
-    assertFalse(c.isFiredUpon());
-    c.firedUpon();
-    assertTrue(c.isFiredUpon());
+    assertFalse(cell.isFiredUpon());
+    cell.firedUpon();
+    assertTrue(cell.isFiredUpon());
   }
 
   /**
@@ -38,9 +40,9 @@ class CellTest {
    */
   @Test
   public void testSetShip() {
-    Ship s = new Submarine(new Cell[] {c});
-    c.setShip(s);
-    assertEquals(s, c.getShip());
+    Ship s = new Submarine(new Cell[] {cell});
+    cell.setShip(s);
+    assertEquals(s, cell.getShip());
   }
 
   /**
@@ -48,8 +50,8 @@ class CellTest {
    */
   @Test
   public void testGetCoord() {
-    assertEquals(0, c.getCoord().getRow());
-    assertEquals(0, c.getCoord().getCol());
+    assertEquals(0, cell.getCoord().getRow());
+    assertEquals(0, cell.getCoord().getCol());
   }
 
   /**
@@ -57,11 +59,11 @@ class CellTest {
    */
   @Test
   public void testToString() {
-    c.setShip(new Submarine(new Cell[3]));
-    assertEquals("S", c.toString());
-    c.firedUpon();
-    assertEquals("M", c.toString());
-    c.hit();
-    assertEquals("X", c.toString());
+    cell.setShip(new Submarine(new Cell[3]));
+    assertEquals("S", cell.toString());
+    cell.firedUpon();
+    assertEquals("M", cell.toString());
+    cell.hit();
+    assertEquals("X", cell.toString());
   }
 }

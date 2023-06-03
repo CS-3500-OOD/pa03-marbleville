@@ -1,6 +1,9 @@
 package cs3500.pa03.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,12 +101,12 @@ class BoardTest {
    */
   @Test
   public void testSetupThrows() {
-    Board board2 = new Board(6, 6, 12345);
     HashMap<ShipType, Integer> specifications = new HashMap<>();
     specifications.put(ShipType.BATTLESHIP, 4);
     specifications.put(ShipType.DESTROYER, 1);
     specifications.put(ShipType.SUBMARINE, 1);
     specifications.put(ShipType.CARRIER, 1);
+    Board board2 = new Board(6, 6, 12345);
     assertThrows(IllegalArgumentException.class, () -> board2.setup(specifications));
     HashMap<ShipType, Integer> specifications2 = new HashMap<>();
     specifications2.put(ShipType.BATTLESHIP, 0);
