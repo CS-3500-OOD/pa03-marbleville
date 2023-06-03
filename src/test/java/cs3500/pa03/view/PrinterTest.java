@@ -12,7 +12,7 @@ class PrinterTest {
   @Test
   void testShowHelper() {
     StringBuilder out = new StringBuilder();
-    Printer.showHelper("Hello World!", out);
+    Printer.show("Hello World!", out);
     assertEquals("Hello World!", out.toString());
   }
 

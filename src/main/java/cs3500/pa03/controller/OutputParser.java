@@ -12,7 +12,7 @@ public class OutputParser {
    *
    * @param player the player whose boards to display
    */
-  public static void showBoards(ManualPlayer player) {
+  public static void showBoards(ManualPlayer player, Appendable out) {
     Board myBoard = player.getBoard();
     Board opponentBoard = player.getOpponentBoard();
     String[][] myBoardRepresentation = new String[myBoard.getNumRows()][myBoard.getNumCols()];
@@ -33,7 +33,7 @@ public class OutputParser {
         opponentBoardRepresentation[i][j] = opponentBoard.getBoard()[i][j].toString();
       }
     }
-    BoardDisplayer.displayBoard(myBoardRepresentation, opponentBoardRepresentation);
+    BoardDisplayer.displayBoard(myBoardRepresentation, opponentBoardRepresentation, out);
   }
 
   /**
@@ -41,8 +41,8 @@ public class OutputParser {
    *
    * @param message the message to display
    */
-  public static void show(String message) {
-    Printer.show(message);
+  public static void show(String message, Appendable out) {
+    Printer.show(message, out);
   }
 
 }

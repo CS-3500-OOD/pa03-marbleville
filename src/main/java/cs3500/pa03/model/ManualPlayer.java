@@ -3,6 +3,7 @@ package cs3500.pa03.model;
 import cs3500.pa03.controller.InputParser;
 import cs3500.pa03.controller.OutputParser;
 import cs3500.pa03.view.Printer;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,12 +59,13 @@ public class ManualPlayer implements Player {
 
   @Override
   public List<Coord> takeShots() {
-    ArrayList<Coord> shots = InputParser.getListOfShots(this);
+    ArrayList<Coord> shots = InputParser.getListOfShots(this,
+        new InputStreamReader(System.in));
     for (Coord c : shots) {
       if (c.getRow() >= this.opponentBoard.getNumRows() ||
           c.getCol() >= this.opponentBoard.getNumCols() ||
           c.getRow() < 0 || c.getCol() < 0) {
-        OutputParser.show("Invalid coordinate: " + c);
+        OutputParser.show("Invalid coordinate: " + c, System.out);
         return takeShots();
       }
     }
@@ -86,6 +88,6 @@ public class ManualPlayer implements Player {
 
   @Override
   public void endGame(GameResult result, String reason) {
-    Printer.show(this.name + " " + result + " because " + reason);
+    Printer.show(this.name + " " + result + " because " + reason, System.out);
   }
 }

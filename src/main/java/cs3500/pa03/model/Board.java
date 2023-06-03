@@ -150,7 +150,6 @@ public class Board {
     }
     ArrayList<Ship> shipsToPlace = getShipsToPlace(specifications);
     for (Ship ship : shipsToPlace) {
-      System.out.println(ship.getLength());
       placeShip(ship);
       ships.add(ship);
     }
