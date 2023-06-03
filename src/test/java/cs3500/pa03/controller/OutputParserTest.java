@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import cs3500.pa03.model.ManualPlayer;
 import cs3500.pa03.model.ShipType;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class OutputParserTest {
    */
   @Test
   void testShowBoards() {
-    ManualPlayer player = new ManualPlayer("player");
+    ManualPlayer player = new ManualPlayer("player", new InputStreamReader(System.in));
     HashMap<ShipType, Integer> specs = new HashMap<>();
     specs.put(ShipType.BATTLESHIP, 1);
     specs.put(ShipType.DESTROYER, 1);

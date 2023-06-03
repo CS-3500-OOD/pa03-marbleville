@@ -60,4 +60,11 @@ public class Coord {
   public boolean equals(Coord o) {
     return o.row == this.row && o.col == this.col;
   }
+
+  /**
+   * Returns a string representation of this coordinate.
+   */
+  public String toString() {
+    return this.row + " " + this.col;
+  }
 }

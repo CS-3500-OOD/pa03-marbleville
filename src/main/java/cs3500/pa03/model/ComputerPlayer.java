@@ -81,4 +81,13 @@ public class ComputerPlayer implements Player {
   public Board getBoard() {
     return this.board;
   }
+
+  /**
+   * Returns this players opponent board
+   *
+   * @return this players opponent board
+   */
+  public Board getOpponentBoard() {
+    return this.opponentBoard;
+  }
 }

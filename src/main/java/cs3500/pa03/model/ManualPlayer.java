@@ -17,13 +17,18 @@ public class ManualPlayer implements Player {
 
   private ArrayList<Coord> lastVolley;
 
+  private Readable in;
+
+  private Appendable out = System.out;
+
   /**
    * Constructs a manual player with the given name.
    *
    * @param name the name of the player
    */
-  public ManualPlayer(String name) {
+  public ManualPlayer(String name, Readable in) {
     this.name = name;
+    this.in = in;
   }
 
 
@@ -60,12 +65,12 @@ public class ManualPlayer implements Player {
   @Override
   public List<Coord> takeShots() {
     ArrayList<Coord> shots = InputParser.getListOfShots(this,
-        new InputStreamReader(System.in));
+        this.in, this.out);
     for (Coord c : shots) {
       if (c.getRow() >= this.opponentBoard.getNumRows() ||
           c.getCol() >= this.opponentBoard.getNumCols() ||
           c.getRow() < 0 || c.getCol() < 0) {
-        OutputParser.show("Invalid coordinate: " + c, System.out);
+        OutputParser.show("Invalid coordinate: " + c, out);
         return takeShots();
       }
     }
@@ -88,6 +93,13 @@ public class ManualPlayer implements Player {
 
   @Override
   public void endGame(GameResult result, String reason) {
-    Printer.show(this.name + " " + result + " because " + reason, System.out);
+    Printer.show(this.name + " " + result + " because " + reason, out);
+  }
+
+  /**
+   * Sets the out of this player to the given appendable
+   */
+  public void setOut(Appendable out) {
+    this.out = out;
   }
 }

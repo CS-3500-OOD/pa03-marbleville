@@ -77,33 +77,6 @@ public class Board {
   }
 
   /**
-   * Returns a list of cells from this board that are neighbors of the given cell.
-   *
-   * @param cell the cell whose neighbors to return
-   * @return the list of neighbors of the given cell
-   */
-  public ArrayList<Cell> getNeighborCells(Cell cell) {
-    ArrayList<Cell> neighbors = new ArrayList<>();
-    Coord topCoord = new Coord(cell.getCoord().getRow() - 1, cell.getCoord().getCol());
-    Coord bottomCoord = new Coord(cell.getCoord().getRow() + 1, cell.getCoord().getCol());
-    Coord leftCoord = new Coord(cell.getCoord().getRow(), cell.getCoord().getCol() - 1);
-    Coord rightCoord = new Coord(cell.getCoord().getRow(), cell.getCoord().getCol() + 1);
-    if (topCoord.getRow() >= 0) {
-      neighbors.add(getCell(topCoord));
-    }
-    if (bottomCoord.getRow() < board.length) {
-      neighbors.add(getCell(bottomCoord));
-    }
-    if (leftCoord.getCol() >= 0) {
-      neighbors.add(getCell(leftCoord));
-    }
-    if (rightCoord.getCol() < board[0].length) {
-      neighbors.add(getCell(rightCoord));
-    }
-    return neighbors;
-  }
-
-  /**
    * Removes and sunk ship from this board's list of ships.
    */
   private void removeSunkShips() {
@@ -137,6 +110,13 @@ public class Board {
   }
 
   /**
+   * Sets the ships on this board to the given list
+   */
+  public void setShips(ArrayList<Ship> ships) {
+    this.ships = ships;
+  }
+
+  /**
    * Sets up this board with the given specifications.
    *
    * @param specifications a map of ship type to the number of occurrences each ship should
@@ -166,6 +146,7 @@ public class Board {
     int totalShips = 0;
     for (ShipType type : specifications.keySet()) {
       if (specifications.get(type) <= 0) {
+        System.out.println(specifications.get(type));
         return false;
       }
       totalShips += specifications.get(type);
@@ -195,9 +176,7 @@ public class Board {
    *
    * @param ship the ship to place
    */
-  // TODO: may fail under edge cases where there are ver few cells, may have to fix with a different
-  // approach for lower dimensions
-  public void placeShip(Ship ship) {
+  private void placeShip(Ship ship) {
     // Gets cells that are empty
     ArrayList<Cell> unpopulated = getUnpopulated();
     // While loop control
@@ -226,26 +205,26 @@ public class Board {
       int shipCellIdx = 0;
       // throw some randomness in there
       if (consecutiveVertical.size() >= ship.getLength() && vertical) {
-        // place the ship in a random location within the consecutive cells
-        // issue here
-        int index = rand.nextInt(consecutiveVertical.size() - ship.getLength() + 1);
-        for (int i = index; i < index + ship.getLength(); i++) {
-          consecutiveVertical.get(i - index).setShip(ship);
-          // Sets ship cells
-          ship.setCell(shipCellIdx, consecutiveVertical.get(i - index));
-          shipCellIdx++;
-        }
+        placeShipInArray(consecutiveVertical, ship);
         shipPlaced = true;
       } else if (consecutiveHorizontal.size() >= ship.getLength()) {
-        // same as above but for horizontal
-        int index = rand.nextInt(consecutiveHorizontal.size() - ship.getLength() + 1);
-        for (int i = index; i < index + ship.getLength(); i++) {
-          consecutiveHorizontal.get(i - index).setShip(ship);
-          ship.setCell(shipCellIdx, consecutiveHorizontal.get(i - index));
-          shipCellIdx++;
-        }
+        placeShipInArray(consecutiveHorizontal, ship);
         shipPlaced = true;
       }
+    }
+  }
+
+  private void placeShipInArray(ArrayList<Cell> list, Ship ship) {
+    int shipCellIdx = 0;
+    int index = rand.nextInt(list.size() - ship.getLength() + 1);
+    // corrects for issues at low dimensions
+    if (board[0].length == 6 || board.length == 6) {
+      index = 0;
+    }
+    for (int i = index; i < index + ship.getLength(); i++) {
+      list.get(i - index).setShip(ship);
+      ship.setCell(shipCellIdx, list.get(i - index));
+      shipCellIdx++;
     }
   }
 
